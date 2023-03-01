@@ -128,3 +128,4 @@ dmypy.json
 # Pyre type checker
 .pyre/
 mongo_db/config.ini
+config.ini
