@@ -70,7 +70,7 @@ def save_quotes_to_postgres(mongo_quotes_odj, id_mongo_to_id_postgres):
 
 if __name__ == "__main__":
     
-    mongo_authors_obj = get_all_obj_mongo("Authors")    
+    mongo_authors_obj = get_all_obj_mongo("Authors")
     save_authors_to_postgres(mongo_authors_obj)
     
     id_mongo_to_id_postgres = get_id_mongo_to_id_postgres(mongo_authors_obj)        

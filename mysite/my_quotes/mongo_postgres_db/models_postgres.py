@@ -11,7 +11,7 @@ Base = declarative_base()
 
 class Author(Base):
     
-    __tablename__ = "polls_author"
+    __tablename__ = "my_quotes_author"
     id = Column(Integer(), primary_key=True)    
     fullname = Column(String(250))
     born_date = Column(DateTime())
@@ -21,9 +21,9 @@ class Author(Base):
 
 class Quote(Base):
     
-    __tablename__ = "polls_quote"
+    __tablename__ = "my_quotes_quote"
     id = Column(Integer(), primary_key=True)
     tags = Column(ARRAY(item_type=String()))
-    author_id = Column(Integer(), ForeignKey("polls_author.id"))
+    author_id = Column(Integer(), ForeignKey("my_quotes_author.id"))
     author = relationship("Author")
     quote = Column(Text())
