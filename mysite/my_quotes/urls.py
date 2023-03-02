@@ -7,4 +7,5 @@ app_name = "my_quotes"
 
 urlpatterns = [
     path("", views.index, name="index"),
+    path("author/<int:author_id>", views.get_author, name="author")
 ]
