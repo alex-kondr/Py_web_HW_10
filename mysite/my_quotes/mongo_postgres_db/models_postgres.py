@@ -23,7 +23,7 @@ class Quote(Base):
     
     __tablename__ = "my_quotes_quote"
     id = Column(Integer(), primary_key=True)
-    tags = Column(ARRAY(item_type=String()))
+    tags = Column(String(500))
     author_id = Column(Integer(), ForeignKey("my_quotes_author.id"))
     author = relationship("Author")
     quote = Column(Text())
