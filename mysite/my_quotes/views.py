@@ -14,10 +14,11 @@ def index(request):
                   context={"quotes": quotes})
     
 
-def get_author(request, author_id):
-    author = Author.objects.filter(pk=author_id).first()
+def get_author(request, author_name):
+    author = Author.objects.filter(fullname=author_name).first()
     return render(request,
                   "my_quotes/author.html",
                   context={"author": author})
+    
 
 
