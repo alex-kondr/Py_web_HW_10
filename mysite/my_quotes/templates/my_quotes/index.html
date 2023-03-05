@@ -12,25 +12,21 @@
             </h5>
             <p class="card-text">
               <span>
-                Quote by {{quote.author.fullname}}
+                Quote № {{quote.id}} by {{quote.author.fullname}}
                 <a href="{% url 'my_quotes:author' quote.author.fullname %}" style="color: #bff1a9;">(about)</a>
               </span>
             </p>
             <span>
               <strong>Tags:</strong>  
               {% for tag in quote.tags %}
-                <button class="btn btn-warning" href="">
-                  <div style="font-size: small;">
-                    <a href="{% url 'my_quotes:tag' tag%}">{{tag}}</a>
-                  </div>
-                </button>                
+                <a href="{% url 'my_quotes:tag' tag %}" class="btn btn-warning btn-sm">{{tag}}</a>                  
               {% endfor %}
             </span>
           </div>
           <div>
             <center>
-            <a href="#" class="btn btn-light">Edit</a>
-            <a href="#" class="btn btn-light">Delete</a>
+              <a href="#" class="btn btn-light">Edit</a>
+              <a href="#" class="btn btn-light">Delete</a>
             </center>
         </div>
         </div>
@@ -41,14 +37,25 @@
 
 <nav aria-label="Page navigation example">
     <ul class="pagination justify-content-center">
-      <li class="page-item disabled">
-        <a class="page-link">Previous</a>
-      </li>
-      <li class="page-item"><a class="page-link" href="#">1</a></li>
-      <li class="page-item"><a class="page-link" href="#">2</a></li>
-      <li class="page-item"><a class="page-link" href="#">3</a></li>
+
+      {% if 1 not in pages %}
       <li class="page-item">
-        <a class="page-link" href="#">Next</a>
+      {% else %}
+      <li class="page-item disabled">
+      {% endif %}
+        <a class="page-link" href="{% url 'my_quotes:next_page' previous_page %}">Previous</a>
+      </li>      
+      {% for i in pages %}
+        {% if i <= count %}
+          <li class="page-item"><a class="page-link" href="{% url 'my_quotes:next_page' i %}">{{i}}</a></li>
+        {% endif %}
+      {% endfor %}
+      {% if next_page <= count %}
+      <li class="page-item">
+      {% else %}
+      <li class="page-item disabled">
+      {% endif %}
+        <a class="page-link" href="{% url 'my_quotes:next_page' next_page %}">Next</a>
       </li>
     </ul>
   </nav>

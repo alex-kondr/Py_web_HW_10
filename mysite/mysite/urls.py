@@ -23,4 +23,5 @@ urlpatterns = [
     path("polls/", include("polls.urls")),
     path("my_quotes/", include("my_quotes.urls")),
     path("test_images/", include("test_images.urls")),
+    path("users/", include("users.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

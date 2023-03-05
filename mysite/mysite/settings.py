@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'polls',
     'my_quotes',
     'test_images',
+    'users'
 ]
 
 MIDDLEWARE = [

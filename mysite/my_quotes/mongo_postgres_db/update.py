@@ -12,7 +12,7 @@ for quote in quotes:
     
     new_tags = quote.tags.replace("{","").replace("}", "")
     
-    print(new_tags)
+    # print(new_tags)
     
     session.execute(update(postQuote)
                     .where(postQuote.id==quote.id)

@@ -1,3 +1,5 @@
+import math
+
 from django.shortcuts import render
 from django.http import HttpResponse
 
@@ -5,35 +7,39 @@ from .models import Author, Quote
 
 
 # Create your views here.
-def index(request):    
-    quotes = Quote.objects.all()
+# def index(request):    
+#     quotes = Quote.objects.all()
     
-    for quote in quotes:
-        tags = quote.tags
-        print(f"{tags=}")
-        print(type(tags))
-        break
-        
-    return render(request, 
-                  "my_quotes/index.html", 
-                  context={"quotes": quotes})
+#     return render(request, 
+#                   "my_quotes/index.html", 
+#                   context={"quotes": quotes,
+#                            "pages": [1, 2, 3],
+#                            "count": 10})
     
 
-def get_quotes_by_tags(request, tag):
+def tag(request, tag):
     
-    quotes = Quote.objects.filter(tags__iregex=r'^[humor]^')
-    print("+++++++++++++++")
-    print(quotes)
+    quotes = Quote.objects.filter(tags__iregex=tag)
     return render(request,
            "my_quotes/tag.html",
-           context={"quotes": quotes})
+           context={"quotes": quotes,})
 
 
-def next_page(request, page_numb):
-    quotes = ""
+def index(request, numb_page=1):
+    
+    count = math.ceil(Quote.objects.count() / 10)
+    start = (numb_page - 1) * 10
+    end = start + 10
+    quotes = Quote.objects.all()[start:end]        
+    pages = [i for i in range(numb_page, numb_page+3)]
+    
     return render(request,
                   "my_quotes/index.html",
-                  context={"quote": quotes})
+                  context={"quotes": quotes,
+                           "count": count,
+                           "pages": pages,
+                           "next_page": pages[1],
+                           "previous_page": pages[0]-1})
     
 
 def get_author(request, author_name):
@@ -41,6 +47,14 @@ def get_author(request, author_name):
     return render(request,
                   "my_quotes/author.html",
                   context={"author": author})
+    
+
+def login(request):
+    pass
+
+
+def register(request):
+    pass
     
 
 

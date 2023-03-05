@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<div class="row">
+<<div class="row">
     {% for quote in quotes %}
     <div class="col-sm-4 mb-3 mb-sm-10">
         <div class="card text-bg-primary mb-3">
@@ -12,15 +12,17 @@
             </h5>
             <p class="card-text">
               <span>
-                Quote by {{quote.author.fullname}}
+                Quote № {{quote.id}} by {{quote.author.fullname}}
                 <a href="{% url 'my_quotes:author' quote.author.fullname %}" style="color: #bff1a9;">(about)</a>
               </span>
             </p>
             <span>
               <strong>Tags:</strong>  
               {% for tag in quote.tags %}
-                <button class="btn btn-warning">
-                  <div style="font-size: small;">{{tag}}</div>
+                <button class="btn btn-warning" href="">
+                  <div style="font-size: small;">
+                    <a href="{% url 'my_quotes:tag' tag %}">{{tag}}</a>
+                  </div>
                 </button>                
               {% endfor %}
             </span>
