@@ -10,6 +10,7 @@ urlpatterns = [
     path("page/<int:numb_page>", views.index, name="next_page"),
     path("author/<author_name>", views.get_author, name="author"),
     path("tag/<tag>", views.tag, name="tag"),
-    # path("login/", views.login, name="login"),
-    # path("register/", views.register, name="register"),
+    path("delete_quote/<int:quote_id>", views.delete_quote, name="delete_quote"),
+    path("edit_quote/", views.edit_quote, name="edit_quote"),
+    path("add_quote/", views.add_quote, name="add_quote"),
 ]

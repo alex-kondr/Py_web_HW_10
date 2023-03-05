@@ -1,0 +1,29 @@
+{% extends "my_quotes/base.html" %}
+
+{% block content %}
+
+<form method="POST" action="{% url 'my_quotes:add_quote' %}">
+    {% csrf_token %}
+<div class="mb-3">
+    <label for="exampleFormControlInput1" class="form-label">Quote: 
+        {{form.quote}}
+    </label>
+</div>
+<div class="mb-3">
+  <label for="exampleFormControlTextarea1" class="form-label">Tags: {{form.tags}}</label>
+</div>
+<div class="mb-3">
+  <label for="exampleFormControlTextarea1" class="form-label">Author: {{form.author}}</label>
+</div>
+<select hidden="true" name="user">
+  <option value="{{user.id}}" selected></option>   
+</select>
+
+<div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="reset" class="btn btn-primary">Reset</button>
+</div>
+</form>
+
+
+{% endblock %}

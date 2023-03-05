@@ -1,13 +1,6 @@
 from django.db import models
+from django.contrib.auth.models import User
 from django_mysql.models import ListCharField
-
-    
-class User(models.Model):
-    
-    firstname = models.CharField(max_length=100)
-    lastname = models.CharField(max_length=100)
-    email = models.EmailField(max_length=200, default=None)
-    phone = models.CharField(max_length=13, default=None)
 
 
 class Author(models.Model):
@@ -17,6 +10,9 @@ class Author(models.Model):
     born_location = models.CharField(max_length=200)
     description = models.TextField()
     
+    def __str__(self):
+        return self.fullname
+    
 
 class Quote(models.Model):
     
@@ -24,5 +20,3 @@ class Quote(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     quote = models.TextField()
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=None, blank=True, null=True)
-    
-    
