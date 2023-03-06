@@ -7,13 +7,13 @@ from .models import Author, Quote
 from .forms import QuoteForm
 
    
-def index(request, numb_page=1):
+def index(request, page:int=1):
     
     count = math.ceil(Quote.objects.count() / 9)
-    start = (numb_page - 1) * 9
+    start = (page - 1) * 9
     end = start + 9
     quotes = Quote.objects.all()[start:end]        
-    pages = [i for i in range(numb_page, numb_page+3)]
+    pages = [i for i in range(page, page+3)]
     
     context={
         "quotes": quotes,
@@ -63,22 +63,22 @@ def add_quote(request):
 
 def edit_quote(request, quote_id):
     
-    if request.method == "POST":
-        quote = {
-            "quote": request.POST.get("quote"),
-            "tags": request.POST.get("tags").split(","),
-            "author_id": request.POST.get("author"),
-            "user_id": request.POST.get("user")
-        }
-        
-        Quote.objects.filter(pk=quote_id).update(**quote)
-        return redirect(to="my_quotes:index")
-    
     quote = Quote.objects.get(pk=quote_id)
-    quote = vars(quote)
-    quote.update({"author": Author.objects.get(pk=quote.get("author_id")),
-                  "tags": ",".join(quote.get("tags"))})
-    form = QuoteForm(quote) 
+    quote.tags = ",".join(quote.tags)
+    
+    if request.method == "POST":
+        form = QuoteForm(request.POST, instance=quote)
+        
+        if form.is_valid():
+            form.save()
+            return redirect(to="my_quotes:index")
+        
+        return render(request,
+                      "my_quotes/add_quote.html",
+                      context={"form": form,
+                               "quote_id": quote_id})
+        
+    form = QuoteForm(instance=quote) 
      
     return render(request,
                   "my_quotes/add_quote.html",

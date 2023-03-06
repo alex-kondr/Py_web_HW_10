@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.forms import ModelForm, CharField, TextInput, Textarea, ChoiceField
+from django.forms import ModelForm, CharField, TextInput, Textarea
 
 from .models import Quote, Author
 
