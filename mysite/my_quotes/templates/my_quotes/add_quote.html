@@ -2,9 +2,8 @@
 
 {% block content %}
 
-{% if not form.quote.label %}
+{% if form.quote.value %}
   <form method="POST" action="{% url 'my_quotes:edit_quote' quote_id %}">
-
 {% else %}
   <form method="POST" action="{% url 'my_quotes:add_quote' %}">
 {% endif %}
