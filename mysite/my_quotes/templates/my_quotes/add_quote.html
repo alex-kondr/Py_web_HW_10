@@ -2,11 +2,17 @@
 
 {% block content %}
 
-<form method="POST" action="{% url 'my_quotes:add_quote' %}">
+{% if not form.quote.label %}
+  <form method="POST" action="{% url 'my_quotes:edit_quote' quote_id %}">
+
+{% else %}
+  <form method="POST" action="{% url 'my_quotes:add_quote' %}">
+{% endif %}
+
     {% csrf_token %}
-<div class="mb-3">
-    <label for="exampleFormControlInput1" class="form-label">Quote: 
-        {{form.quote}}
+<div class="input-group mb-3">
+    <label for="exampleFormControlInput1" class="form-label">
+        {{form.quote.label}}: {{form.quote}}
     </label>
 </div>
 <div class="mb-3">
@@ -20,10 +26,9 @@
 </select>
 
 <div>
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" class="btn btn-primary">Save</button>
     <button type="reset" class="btn btn-primary">Reset</button>
 </div>
 </form>
-
 
 {% endblock %}

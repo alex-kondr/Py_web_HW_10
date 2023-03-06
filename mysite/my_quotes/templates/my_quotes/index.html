@@ -11,24 +11,24 @@
             Quote № {{quote.id}} by {{quote.author.fullname}}
             <a
               href="{% url 'my_quotes:author' quote.author.fullname %}"
-              style="color: #bff1a9"
-              >(about)</a
-            >
+              style="color: #bff1a9">
+              (about)
+            </a>
           </span>
         </p>
         <span>
           <strong>Tags:</strong>
           {% for tag in quote.tags %}
-          <a href="{% url 'my_quotes:tag' tag %}" class="btn btn-warning btn-sm"
-            >{{tag}}</a
-          >
+          <a href="{% url 'my_quotes:tag' tag %}" class="btn btn-warning btn-sm">
+            {{tag}}
+          </a>
           {% endfor %}
         </span>
       </div>
       <div>
-        {% if user.is_authenticated %}
+        {% if  user.is_superuser or user.id == quote.user_id and user.is_authenticated %}
           <center>
-            <a href="{% url 'my_quotes:edit_quote' %}" class="btn btn-light">Edit</a>
+            <a href="{% url 'my_quotes:edit_quote' quote.id %}" class="btn btn-light">Edit</a>
             <a href="{% url 'my_quotes:delete_quote' quote.id %}" class="btn btn-light">Delete</a>
           </center>
         {% endif %}
@@ -51,9 +51,9 @@
         {% endif %}
         <a
           class="page-link"
-          href="{% url 'my_quotes:next_page' previous_page %}"
-          >Previous</a
-        >
+          href="{% url 'my_quotes:next_page' previous_page %}">
+          Previous
+        </a>
       </li>
       {% for i in pages %} {% if i <= count %}
       <li class="page-item">
