@@ -4,8 +4,43 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 
 from .models import Author, Quote
-from .forms import QuoteForm
+from .forms import AuthorForm, QuoteForm
 
+
+def add_author(request):
+    
+    if request.method == "POST":
+        form = AuthorForm(request.POST)
+        
+        if form.is_valid():
+            form.save()
+            return redirect(to="my_quotes:index")
+        
+        render(request,
+               "my_quotes/add_author.html",
+               context={"form": form})
+    
+    return render(request,
+                  "my_quotes/add_author.html",
+                  context={"form": AuthorForm()})
+
+
+def add_quote(request):
+    
+    if request.method == "POST":
+        form = QuoteForm(request.POST)
+        
+        if form.is_valid():
+            form.save()            
+            return redirect(to="my_quotes:index")        
+        
+        return render(request, 
+                        "my_quotes/add_edit_quote.html",
+                        context={"form": form})  
+    
+    return render(request,
+                  "my_quotes/add_edit_quote.html",
+                  context={"form": QuoteForm()})
    
 def index(request, page:int=1):
     
@@ -43,22 +78,6 @@ def get_author(request, author_name):
                   context={"author": author})
     
 
-def add_quote(request):
-    
-    if request.method == "POST":
-        form = QuoteForm(request.POST)
-        
-        if form.is_valid():
-            form.save()            
-            return redirect(to="my_quotes:index")        
-        
-        return render(request, 
-                        "my_quotes/add_quote.html",
-                        context={"form": form})  
-    
-    return render(request,
-                  "my_quotes/add_quote.html",
-                  context={"form": QuoteForm()})
 
 
 def edit_quote(request, quote_id):
@@ -74,14 +93,14 @@ def edit_quote(request, quote_id):
             return redirect(to="my_quotes:index")
         
         return render(request,
-                      "my_quotes/add_quote.html",
+                      "my_quotes/add_edit_quote.html",
                       context={"form": form,
                                "quote_id": quote_id})
         
     form = QuoteForm(instance=quote) 
      
     return render(request,
-                  "my_quotes/add_quote.html",
+                  "my_quotes/add_edit_quote.html",
                   context={"form": form,
                            "quote_id": quote_id})
 
