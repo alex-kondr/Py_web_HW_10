@@ -1,6 +1,6 @@
 from sqlalchemy.engine import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base, relationship
-from sqlalchemy import Column, String, DateTime, Text, ForeignKey, ARRAY, Integer
+from sqlalchemy import Column, String, DateTime, Text, ForeignKey, Integer
 
 
 engine = create_engine("postgresql://postgres:password@localhost:5432/HW_10")

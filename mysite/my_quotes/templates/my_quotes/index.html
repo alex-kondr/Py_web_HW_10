@@ -1,7 +1,7 @@
 {% extends "my_quotes/base.html" %} {% block content %}
 
 <div class="row">
-  {% for quote in quotes %}
+  {% for quote in page_object %}
   <div class="col-sm-4 mb-3 mb-sm-10">
     <div class="card text-bg-primary mb-3">
       <div class="card-body">
@@ -29,7 +29,7 @@
         {% if  user.is_superuser or user.id == quote.user_id and user.is_authenticated %}
           <center>
             <a href="{% url 'my_quotes:edit_quote' quote.id %}" class="btn btn-light">Edit</a>
-            <a href="{% url 'my_quotes:delete_quote' quote.id %}" class="btn btn-light">Delete</a>
+            <a href="{% url 'my_quotes:delete_quote' quote.id page_object.number %}" class="btn btn-light">Delete</a>
           </center>
         {% endif %}
       </div>
@@ -44,34 +44,29 @@
 <div>
   <nav aria-label="Page navigation example">
     <ul class="pagination justify-content-center">
-      {% if 1 not in pages %}
-      <li class="page-item">{% else %}</li>
+      {% if page_object.has_previous %} 
+        <li class="page-item"><a class="page-link" href="{% url 'my_quotes:next_page' 1 %}">First</a></li>
+        <li class="page-item"><a class="page-link" href="{% url 'my_quotes:next_page' page_object.previous_page_number %}">Previous</a></li>
+        <li class="page-item"><a class="page-link" href="{% url 'my_quotes:next_page' page_object.previous_page_number %}">{{page_object.previous_page_number}}</a></li>
+      {% endif %}
 
-      <li class="page-item disabled">
-        {% endif %}
-        <a
-          class="page-link"
-          href="{% url 'my_quotes:next_page' previous_page %}">
-          Previous
-        </a>
-      </li>
-      {% for i in pages %} {% if i <= count %}
-      <li class="page-item">
-        <a class="page-link" href="{% url 'my_quotes:next_page' i %}">{{i}}</a>
-      </li>
-      {% endif %} {% endfor %} {% if next_page <= count %}
-      <li class="page-item">{% else %}</li>
+      <li class="page-item"><a class="page-link disabled" href="{% url 'my_quotes:next_page' page_object.number %}">{{page_object.number}}</a></li>
 
-      <li class="page-item disabled">
-        {% endif %}
-        <a class="page-link" href="{% url 'my_quotes:next_page' next_page %}">
-          Next
-        </a>
-      </li>
+      {% if page_object.has_next %} 
+        <li class="page-item"><a class="page-link" href="{% url 'my_quotes:next_page' page_object.next_page_number %}">{{page_object.next_page_number}}</a></li>
+        <li class="page-item"><a class="page-link" href="{% url 'my_quotes:next_page' page_object.next_page_number %}">Next</a></li>
+        <li class="page-item"><a class="page-link" href="{% url 'my_quotes:next_page' page_object.paginator.num_pages %}">Last</a></li>
+      {% endif %}
+
     </ul>
   </nav>
 </div>
 
 {% endif %}
+
+
+<a class="btn btn-primary" style="font-size: 30px" href="#">love</a>
+
+
 
 {% endblock %}

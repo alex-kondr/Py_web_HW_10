@@ -1,7 +1,5 @@
-import math
-
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
+from django.core.paginator import Paginator
 
 from .models import Author, Quote
 from .forms import AuthorForm, QuoteForm
@@ -44,18 +42,13 @@ def add_quote(request):
    
 def index(request, page:int=1):
     
-    count = math.ceil(Quote.objects.count() / 9)
-    start = (page - 1) * 9
-    end = start + 9
-    quotes = Quote.objects.all()[start:end]        
-    pages = [i for i in range(page, page+3)]
+    quotes = Quote.objects.all()
+    paginator = Paginator(quotes, per_page=9)
+    page_object = paginator.get_page(page)
     
-    context={
-        "quotes": quotes,
-        "count": count,
-        "pages": pages,
-        "next_page": pages[1],
-        "previous_page": pages[0]-1
+    
+    context={        
+        "page_object": page_object
         }
     
     return render(request,
@@ -63,7 +56,7 @@ def index(request, page:int=1):
                   context=context)
     
   
-def tag(request, tag):
+def tag(request, tag:str):
     quotes = Quote.objects.filter(tags__iregex=tag)
     return render(request,
                   "my_quotes/index.html",
@@ -71,7 +64,7 @@ def tag(request, tag):
                            "tag": tag})
 
 
-def get_author(request, author_name):
+def get_author(request, author_name:str):
     author = Author.objects.filter(fullname=author_name).first()
     return render(request,
                   "my_quotes/author.html",
@@ -80,7 +73,7 @@ def get_author(request, author_name):
 
 
 
-def edit_quote(request, quote_id):
+def edit_quote(request, quote_id:int):
     
     quote = Quote.objects.get(pk=quote_id)
     quote.tags = ",".join(quote.tags)
@@ -105,10 +98,9 @@ def edit_quote(request, quote_id):
                            "quote_id": quote_id})
 
 
-def delete_quote(request, quote_id):
+def delete_quote(request, quote_id:int, page:int=1):
     
     quote = Quote.objects.get(pk=quote_id)
     quote.delete()
     
-    return redirect(to="my_quotes:index")
-
+    return index(request, page)

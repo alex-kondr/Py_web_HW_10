@@ -16,6 +16,9 @@ psycopg2 = "^2.9.5"
 django-mysql = "^4.9.0"
 sqlalchemy = "^2.0.4"
 pillow = "^9.4.0"
+scrapy = "^2.8.0"
+pyzmq = "^25.0.0"
+ipykernel = "^6.21.3"
 
 
 [build-system]
