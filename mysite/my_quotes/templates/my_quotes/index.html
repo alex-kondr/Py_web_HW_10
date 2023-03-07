@@ -64,9 +64,10 @@
 
 {% endif %}
 
-
-<a class="btn btn-primary" style="font-size: 30px" href="#">love</a>
-
-
+<div>
+  {% for top_tag in top_tags %}
+<a class="btn btn-primary" style="font-size: {{top_tag.top_tag}}px" href="{% url 'my_quotes:tag' top_tag.top_tag %}">{{top_tag.top_tag }}</a>
+{% endfor %} 
+</div>
 
 {% endblock %}

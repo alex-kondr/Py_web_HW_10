@@ -1,8 +1,40 @@
+import html
+
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 
 from .models import Author, Quote
 from .forms import AuthorForm, QuoteForm
+
+
+class TopTags:
+    
+    def __init__(self, num, top_tag):
+        self.num = num
+        self.top_tag = top_tag    
+    
+    
+def get_top_tags(quotes):
+    
+    tags = {}
+    top_tags = []
+    
+    for quote in quotes:
+        for tag in quote.tags:
+            if tags.get(tag):
+                tags[tag] += 1
+            else:
+                tags.update({tag: 1})
+                
+    for i in range(10):        
+        if not tags:
+            break
+        
+        top_tag = max(tags, key=tags.get)
+        top_tags.append(TopTags(i, top_tag))
+        tags.pop(top_tag)
+    
+    return top_tags    
 
 
 def add_author(request):
@@ -42,37 +74,28 @@ def add_quote(request):
    
 def index(request, page:int=1):
     
-    quotes = Quote.objects.all()
-    
-    top_tags = {}
-    
-    for quote in quotes:
-        for tag in quote.tags:
-            if top_tags.get(tag):
-                top_tags[tag] += 1
-            else:
-                top_tags.update({tag: 1})
-    
-    print(top_tags)
+    quotes = Quote.objects.all()    
     paginator = Paginator(quotes, per_page=9)
     page_object = paginator.get_page(page)
     
+    top_tags = get_top_tags(quotes)
     
     context={        
-        "page_object": page_object
+        "page_object": page_object,
+        "top_tags": top_tags
         }
     
     return render(request,
                   "my_quotes/index.html",
                   context=context)
-    
+
   
-def tag(request, tag:str):
-    quotes = Quote.objects.filter(tags__iregex=tag)
+def tag(request, tag1:str):
+    quotes = Quote.objects.filter(tags__iregex=tag1)
     return render(request,
                   "my_quotes/index.html",
                   context={"quotes": quotes,
-                           "tag": tag})
+                           "tag": tag1})
 
 
 def get_author(request, author_name:str):
