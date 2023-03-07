@@ -43,6 +43,17 @@ def add_quote(request):
 def index(request, page:int=1):
     
     quotes = Quote.objects.all()
+    
+    top_tags = {}
+    
+    for quote in quotes:
+        for tag in quote.tags:
+            if top_tags.get(tag):
+                top_tags[tag] += 1
+            else:
+                top_tags.update({tag: 1})
+    
+    print(top_tags)
     paginator = Paginator(quotes, per_page=9)
     page_object = paginator.get_page(page)
     
