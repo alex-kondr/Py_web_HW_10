@@ -5,9 +5,9 @@ from django_mysql.models import ListCharField
 
 class Author(models.Model):
     
-    fullname = models.CharField(max_length=200)
+    fullname = models.CharField(max_length=255)
     born_date = models.DateTimeField()
-    born_location = models.CharField(max_length=200)
+    born_location = models.CharField(max_length=255)
     description = models.TextField()
     
     def __str__(self):
