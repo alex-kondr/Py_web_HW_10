@@ -39,7 +39,7 @@
 </div>
 
 
-{% if not tag %}
+
 
 <div>
   <nav aria-label="Page navigation example">
@@ -62,12 +62,12 @@
   </nav>
 </div>
 
-{% endif %}
-
-<div>
-  {% for top_tag in top_tags %}
-<a class="btn btn-primary" style="font-size: {{top_tag.top_tag}}px" href="{% url 'my_quotes:tag' top_tag.top_tag %}">{{top_tag.top_tag }}</a>
+<h2>Top Ten tags</h2>
+{% for top_tag in top_tags %}
+<span>
+<a class="btn btn-primary" style="{{top_tag.style}}" href="{% url 'my_quotes:tag' top_tag.top_tag %}">{{top_tag.top_tag}}</a>
+</span>
 {% endfor %} 
-</div>
+
 
 {% endblock %}

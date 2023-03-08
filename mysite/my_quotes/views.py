@@ -9,8 +9,8 @@ from .forms import AuthorForm, QuoteForm
 
 class TopTags:
     
-    def __init__(self, num, top_tag):
-        self.num = num
+    def __init__(self, size, top_tag):
+        self.style = f"font-size: {size}px"
         self.top_tag = top_tag    
     
     
@@ -31,7 +31,7 @@ def get_top_tags(quotes):
             break
         
         top_tag = max(tags, key=tags.get)
-        top_tags.append(TopTags(i, top_tag))
+        top_tags.append(TopTags(40-i*4, top_tag))
         tags.pop(top_tag)
     
     return top_tags    
@@ -90,21 +90,22 @@ def index(request, page:int=1):
                   context=context)
 
   
-def tag(request, tag1:str):
-    quotes = Quote.objects.filter(tags__iregex=tag1)
+def get_quotes_of_tag(request, tag:str):
+    
+    quotes = Quote.objects.filter(tags__iregex=tag)
+    paginator = Paginator(quotes, per_page=100)
+    page_object = paginator.get_page(1)
+    
     return render(request,
                   "my_quotes/index.html",
-                  context={"quotes": quotes,
-                           "tag": tag1})
+                  context={"page_object": page_object})
 
 
 def get_author(request, author_name:str):
     author = Author.objects.filter(fullname=author_name).first()
     return render(request,
                   "my_quotes/author.html",
-                  context={"author": author})
-    
-
+                  context={"author": author})   
 
 
 def edit_quote(request, quote_id:int):
