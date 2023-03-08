@@ -1,7 +1,6 @@
-import html
-
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
+from django.contrib.auth.decorators import login_required
 
 from .models import Author, Quote
 from .forms import AuthorForm, QuoteForm
@@ -37,6 +36,7 @@ def get_top_tags(quotes):
     return top_tags    
 
 
+@login_required
 def add_author(request):
     
     if request.method == "POST":
@@ -55,6 +55,7 @@ def add_author(request):
                   context={"form": AuthorForm()})
 
 
+@login_required
 def add_quote(request):
     
     if request.method == "POST":
@@ -71,6 +72,7 @@ def add_quote(request):
     return render(request,
                   "my_quotes/add_edit_quote.html",
                   context={"form": QuoteForm()})
+    
    
 def index(request, page:int=1):
     
@@ -108,6 +110,7 @@ def get_author(request, author_name:str):
                   context={"author": author})   
 
 
+@login_required
 def edit_quote(request, quote_id:int):
     
     quote = Quote.objects.get(pk=quote_id)
@@ -133,6 +136,7 @@ def edit_quote(request, quote_id:int):
                            "quote_id": quote_id})
 
 
+@login_required
 def delete_quote(request, quote_id:int, page:int=1):
     
     quote = Quote.objects.get(pk=quote_id)
